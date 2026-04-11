@@ -1,5 +1,6 @@
-import { Navbar } from "@/components/ui/layout/Navbar";
+import { Navbar } from "@/components/layout/Navbar";
 import "./globals.css";
+import Footer from "@/components/layout/Footer";
 
 
 export default function RootLayout({
@@ -14,7 +15,10 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <Navbar />
-        {children}
+        <div className="min-h-[calc(100svh-300px)]">
+          {children}
+        </div>
+        <Footer />
         </body>
     </html>
   );
