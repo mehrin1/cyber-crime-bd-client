@@ -1,11 +1,16 @@
-import React from 'react';
+import CTASection from "@/components/features/home/CTASection";
+import FeatureHighlights from "@/components/features/home/FeatureHighlights";
+import HeroIntro from "@/components/features/home/HeroIntro";
+import StatsSection from "@/components/features/home/StatsSection";
 
-const HomePage = () => {
+
+export default function HomePage() {
   return (
-    <div>
-      home page
+    <div className="space-y-12 p-6">
+      <HeroIntro />
+      <FeatureHighlights />
+      <StatsSection />
+      <CTASection />
     </div>
   );
-};
-
-export default HomePage;
+}
