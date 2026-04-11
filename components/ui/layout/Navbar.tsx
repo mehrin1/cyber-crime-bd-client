@@ -80,7 +80,7 @@ const Navbar = ({
       title: "Seek Help",
       url: "/help",
     },
-    
+
     {
       title: "Laws",
       url: "/laws",
@@ -192,11 +192,13 @@ const Navbar = ({
 
 
               <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="icon">
-                    <Menu className="size-4" />
-                  </Button>
-                </SheetTrigger>
+                <SheetTrigger
+                  render={
+                    <Button variant="outline" size="icon">
+                      <Menu className="size-4" />
+                    </Button>
+                  }
+                />
                 <SheetContent className="overflow-y-auto">
                   <SheetHeader>
                     <SheetTitle>
@@ -206,7 +208,7 @@ const Navbar = ({
                     </SheetTitle>
                   </SheetHeader>
                   <div className="flex flex-col gap-6 p-4">
-                    <Accordion type="single" collapsible className="flex w-full flex-col gap-4">
+                    <Accordion className="flex w-full flex-col gap-4">
                       {menu.map((item) => renderMobileMenuItem(item))}
                     </Accordion>
 
@@ -236,11 +238,15 @@ const renderMenuItem = (item: MenuItem) => {
   return (
     <NavigationMenuItem key={item.title}>
       <NavigationMenuLink
-        asChild
-        className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
-      >
-        <Link href={item.url}>{item.title}</Link>
-      </NavigationMenuLink>
+        render={
+          <Link
+            href={item.url}
+            className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
+          >
+            {item.title}
+          </Link>
+        }
+      />
     </NavigationMenuItem>
   );
 };
