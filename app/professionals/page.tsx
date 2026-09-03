@@ -72,22 +72,25 @@ export default function ProfessionalsPage() {
     if (serviceType !== "ALL") query.set("serviceType", serviceType);
     if (urgency !== "ALL") query.set("urgency", urgency);
     if (search.trim()) query.set("search", search.trim());
-    setLoading(true);
-    setError("");
-    fetch(`/api/support-resources?${query.toString()}`, {
-      signal: controller.signal,
-    })
-      .then(async (response) => {
+    async function loadResources() {
+      setLoading(true);
+      setError("");
+      try {
+        const response = await fetch(`/api/support-resources?${query.toString()}`, {
+          signal: controller.signal,
+        });
         if (!response.ok)
           throw new Error("Unable to load the support directory.");
-        return response.json() as Promise<{ data: SupportResource[] }>;
-      })
-      .then((payload) => setResources(payload.data))
-      .catch((requestError: unknown) => {
+        const payload = (await response.json()) as { data: SupportResource[] };
+        setResources(payload.data);
+      } catch (requestError: unknown) {
         if (requestError instanceof Error && requestError.name !== "AbortError")
           setError(requestError.message);
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    }
+    void loadResources();
     return () => controller.abort();
   }, [region, serviceType, urgency, search]);
 

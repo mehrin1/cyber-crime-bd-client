@@ -1,9 +1,18 @@
 import type { NextConfig } from "next";
 
-const authServerURL = (process.env.AUTH_SERVER_URL || "http://localhost:5000").replace(/\/$/, "");
+const authServerURL = process.env.AUTH_SERVER_URL?.replace(/\/$/, "");
+
+if (authServerURL) {
+  const parsedAuthServerURL = new URL(authServerURL);
+  if (!['http:', 'https:'].includes(parsedAuthServerURL.protocol)) {
+    throw new Error("AUTH_SERVER_URL must use http:// or https://.");
+  }
+}
 
 const nextConfig: NextConfig = {
   async rewrites() {
+    if (!authServerURL) return [];
+
     return [
       {
         source: "/api/auth/:path*",

@@ -16,6 +16,18 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Environment variables
+
+Copy `.env.example` to `.env.local` for local development. This repository is
+the Next.js client; its auth, laws, survey, support, dashboard, and help APIs
+must be provided by the separately deployed backend.
+
+For a Vercel deployment, add `AUTH_SERVER_URL` in the Vercel project settings
+and set it to the backend's public HTTPS origin. Set `NEXT_PUBLIC_APP_URL` to
+the final Vercel URL when the backend needs an explicit callback origin. Do not
+use localhost values in production. The backend must allow the Vercel origin
+in its CORS and cookie configuration.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

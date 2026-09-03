@@ -122,11 +122,27 @@ export default function HelpPage() {
     );
   }
   useEffect(() => {
-    void loadRequests();
-  }, [session?.user]); // eslint-disable-line react-hooks/exhaustive-deps
+    let cancelled = false;
+    async function fetchRequests() {
+      if (!session?.user) return;
+      setLoadingRequests(true);
+      const response = await fetch("/api/help-requests", {
+        credentials: "include",
+      });
+      if (cancelled) return;
+      setLoadingRequests(false);
+      if (!response.ok) return;
+      const payload = (await response.json()) as { data: HelpRequest[] };
+      setRequests(payload.data);
+      setSelected(null);
+    }
+    void fetchRequests();
+    return () => {
+      cancelled = true;
+    };
+  }, [session?.user]);
   useEffect(() => {
     if (!selected || !session?.user) {
-      setMessages([]);
       return;
     }
     fetch(`/api/help-requests/${selected.id}/messages`, {
@@ -304,13 +320,11 @@ function HelpRequestForm({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState<HelpCategory>("ACCOUNT_SECURITY");
-  const [anonymous, setAnonymous] = useState(!signedIn);
+  const [anonymous, setAnonymous] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  useEffect(() => {
-    if (!signedIn) setAnonymous(true);
-  }, [signedIn]);
+  const isAnonymous = !signedIn || anonymous;
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSubmitting(true);
@@ -324,7 +338,7 @@ function HelpRequestForm({
         title,
         description,
         category,
-        isAnonymous: anonymous,
+        isAnonymous,
       }),
     });
     const payload = await response.json();
@@ -336,7 +350,7 @@ function HelpRequestForm({
     setTitle("");
     setDescription("");
     setSuccess(
-      anonymous
+      isAnonymous
         ? "Your anonymous request was received. It cannot be retrieved or followed up online."
         : "Your private case was created. You can follow it up from the panel beside this form.",
     );
@@ -398,7 +412,7 @@ function HelpRequestForm({
             <div>
               <p className="font-bold text-amber-950">Submit anonymously</p>
               <p className="mt-1 text-sm leading-6 text-amber-900">
-                {anonymous
+                {isAnonymous
                   ? "No account is attached. You will not be able to view this case or receive online follow-up."
                   : "Your account is attached so the case and future secure messages appear in your dashboard."}
               </p>
@@ -406,7 +420,7 @@ function HelpRequestForm({
             <input
               aria-label="Submit anonymously"
               type="checkbox"
-              checked={anonymous}
+              checked={isAnonymous}
               disabled={!signedIn || sessionLoading}
               onChange={(event) => setAnonymous(event.target.checked)}
               className="mt-1 size-4 accent-teal-700"
