@@ -2,7 +2,7 @@
 
 import { Bot, ExternalLink, LoaderCircle, MessageCircle, Plus, Send, ShieldCheck } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, Suspense, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,6 +14,10 @@ type Conversation = { id: string; title: string; createdAt: string; updatedAt: s
 type ConversationDetail = { id: string; title: string; user: { name: string; email: string }; messages: Message[] };
 
 export default function ChatPage() {
+  return <Suspense fallback={<Loading />}><ChatWorkspace /></Suspense>;
+}
+
+function ChatWorkspace() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session, isPending } = authClient.useSession();
