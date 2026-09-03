@@ -103,9 +103,11 @@ export default function CommunityPage() {
         response,
         "Unable to reach the community server. Check the frontend rewrite and backend deployment.",
       );
-      if (!response.ok) throw new Error(payload.message || "Unable to load community posts.");
-      setPosts((current) => (cursor ? [...current, ...payload.data.posts] : payload.data.posts));
-      setNextCursor(payload.data.nextCursor);
+      if (!response.ok || !payload.data)
+        throw new Error(payload.message || "Unable to load community posts.");
+      const feed = payload.data;
+      setPosts((current) => (cursor ? [...current, ...feed.posts] : feed.posts));
+      setNextCursor(feed.nextCursor);
     } catch (requestError) {
       setError(requestError instanceof Error ? requestError.message : "Unable to load community posts.");
     } finally {
