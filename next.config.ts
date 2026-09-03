@@ -39,8 +39,16 @@ const nextConfig: NextConfig = {
         destination: `${authServerURL}/api/dashboard/:path*`,
       },
       {
+        source: "/api/account/:path*",
+        destination: `${authServerURL}/api/account/:path*`,
+      },
+      {
         source: "/api/help-requests/:path*",
         destination: `${authServerURL}/api/help-requests/:path*`,
+      },
+      {
+        source: "/api/community/:path*",
+        destination: `${authServerURL}/api/community/:path*`,
       },
     ];
   },

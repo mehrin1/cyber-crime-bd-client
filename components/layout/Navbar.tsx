@@ -83,6 +83,10 @@ const Navbar = ({
       title: "Seek Help",
       url: "/help",
     },
+    {
+      title: "Community",
+      url: "/community",
+    },
 
     {
       title: "Laws",

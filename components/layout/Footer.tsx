@@ -14,6 +14,7 @@ const groups = [
     title: "Support",
     links: [
       ["Seek help", "/help"],
+      ["Community", "/community"],
       ["Your dashboard", "/dashboard"],
       ["About CyberSafeBD", "/about"],
     ],

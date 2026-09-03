@@ -3,6 +3,7 @@
 import {
   BarChart3,
   ClipboardList,
+  MessageCircle,
   FileText,
   LoaderCircle,
   MessageSquareText,
@@ -34,6 +35,12 @@ type UserDashboard = {
       updatedAt: string;
     }[];
     sentMessageCount: number;
+    communityPosts: {
+      id: string;
+      title: string;
+      createdAt: string;
+      _count: { likes: number; comments: number };
+    }[];
   };
 };
 
@@ -137,7 +144,7 @@ export default function DashboardPage() {
           </div>
         </section>
         {profile.role === "ADMIN" ? <AdminPanel data={adminDashboard} /> : null}
-        <section className="mt-8 grid gap-4 md:grid-cols-3">
+        <section className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           <Metric
             icon={<FileText className="size-5" />}
             label="Survey responses"
@@ -156,8 +163,14 @@ export default function DashboardPage() {
             value={activity.sentMessageCount}
             note="Future secure support chat activity"
           />
+          <Metric
+            icon={<MessageCircle className="size-5" />}
+            label="Community posts"
+            value={activity.communityPosts.length}
+            note="Your recent shared experiences"
+          />
         </section>
-        <section className="mt-8 grid gap-6 lg:grid-cols-2">
+        <section className="mt-8 grid gap-6 lg:grid-cols-3">
           <ActivityPanel
             title="Your survey contributions"
             empty="No account-linked survey responses yet."
@@ -183,6 +196,20 @@ export default function DashboardPage() {
                 key={request.id}
                 title={request.title}
                 detail={`${request.category.toLowerCase()} · ${request.status.toLowerCase().replaceAll("_", " ")} · Updated ${formatDate(request.updatedAt)}`}
+              />
+            ))}
+          </ActivityPanel>
+          <ActivityPanel
+            title="Your community posts"
+            empty="You have not shared an experience yet."
+            actionHref="/community?mine=true"
+            actionText="View posts"
+          >
+            {activity.communityPosts.map((post) => (
+              <Row
+                key={post.id}
+                title={post.title}
+                detail={`${post._count.likes} likes · ${post._count.comments} comments · Posted ${formatDate(post.createdAt)}`}
               />
             ))}
           </ActivityPanel>

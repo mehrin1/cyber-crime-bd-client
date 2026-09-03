@@ -28,6 +28,9 @@ the final Vercel URL when the backend needs an explicit callback origin. Do not
 use localhost values in production. The backend must allow the Vercel origin
 in its CORS and cookie configuration.
 
+The community feed is proxied through `/api/community/*`; it uses the same
+`AUTH_SERVER_URL` deployment setting as the authenticated dashboard APIs.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
