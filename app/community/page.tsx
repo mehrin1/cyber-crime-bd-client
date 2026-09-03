@@ -41,6 +41,12 @@ type FeedResponse = {
   data: { posts: CommunityPost[]; nextCursor: string | null };
 };
 
+type ApiPayload<T> = {
+  data?: T;
+  message?: string;
+  errors?: { path: string; message: string }[];
+};
+
 export default function CommunityPage() {
   const router = useRouter();
   const { data: session, isPending: isSessionPending } = authClient.useSession();
@@ -93,7 +99,10 @@ export default function CommunityPage() {
       const response = await fetch(`/api/community/posts?${query.toString()}`, {
         credentials: "include",
       });
-      const payload = (await response.json()) as FeedResponse & { message?: string };
+      const payload = await readApiPayload<FeedResponse["data"]>(
+        response,
+        "Unable to reach the community server. Check the frontend rewrite and backend deployment.",
+      );
       if (!response.ok) throw new Error(payload.message || "Unable to load community posts.");
       setPosts((current) => (cursor ? [...current, ...payload.data.posts] : payload.data.posts));
       setNextCursor(payload.data.nextCursor);
@@ -121,7 +130,10 @@ export default function CommunityPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, content }),
       });
-      const payload = (await response.json()) as { data?: CommunityPost; message?: string };
+      const payload = await readApiPayload<CommunityPost>(
+        response,
+        "Unable to reach the community server. Your post was not sent.",
+      );
       if (!response.ok || !payload.data) throw new Error(payload.message || "Unable to publish your post.");
       setPosts((current) => [payload.data!, ...current]);
       setTitle("");
@@ -141,7 +153,10 @@ export default function CommunityPage() {
         method: "POST",
         credentials: "include",
       });
-      const payload = (await response.json()) as { data?: { liked: boolean; likeCount: number }; message?: string };
+      const payload = await readApiPayload<{ liked: boolean; likeCount: number }>(
+        response,
+        "Unable to reach the community server. The like was not saved.",
+      );
       if (!response.ok || !payload.data) throw new Error(payload.message || "Unable to update the like.");
       setPosts((current) => current.map((item) => item.id === post.id ? {
         ...item,
@@ -162,7 +177,10 @@ export default function CommunityPage() {
 
     try {
       const response = await fetch(`/api/community/posts/${postId}/comments`, { credentials: "include" });
-      const payload = (await response.json()) as { data?: CommunityComment[]; message?: string };
+      const payload = await readApiPayload<CommunityComment[]>(
+        response,
+        "Unable to reach the community server. Comments could not be loaded.",
+      );
       if (!response.ok || !payload.data) throw new Error(payload.message || "Unable to load comments.");
       setComments((current) => ({ ...current, [postId]: payload.data! }));
     } catch (requestError) {
@@ -183,7 +201,10 @@ export default function CommunityPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: value }),
       });
-      const payload = (await response.json()) as { data?: CommunityComment; message?: string };
+      const payload = await readApiPayload<CommunityComment>(
+        response,
+        "Unable to reach the community server. Your comment was not sent.",
+      );
       if (!response.ok || !payload.data) throw new Error(payload.message || "Unable to add your comment.");
       setComments((current) => ({ ...current, [postId]: [...(current[postId] || []), payload.data!] }));
       setCommentText((current) => ({ ...current, [postId]: "" }));
@@ -260,3 +281,30 @@ function Avatar({ name }: { name: string }) { return <div className="flex size-1
 function EmptyFeed({ mine, search }: { mine: boolean; search: string }) { return <div className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center"><MessageCircle className="mx-auto size-7 text-teal-700" /><h3 className="mt-3 font-extrabold text-slate-900">{mine ? "No posts from you yet" : search ? "No matching posts" : "No community posts yet"}</h3><p className="mt-2 text-sm text-slate-600">{mine ? "Share an experience above, or switch to the full community feed." : "Try a different search or check back soon."}</p></div>; }
 function LoadingFeed() { return <div className="flex min-h-56 items-center justify-center gap-3 text-sm text-slate-500"><LoaderCircle className="size-5 animate-spin" /> Loading community posts</div>; }
 function formatDate(value: string) { return new Intl.DateTimeFormat("en-BD", { dateStyle: "medium" }).format(new Date(value)); }
+
+async function readApiPayload<T>(response: Response, fallbackMessage: string): Promise<ApiPayload<T>> {
+  const rawBody = await response.text();
+
+  if (!rawBody) {
+    return { message: response.ok ? undefined : fallbackMessage };
+  }
+
+  try {
+    const payload = JSON.parse(rawBody) as ApiPayload<T>;
+    if (payload.errors?.length) {
+      return {
+        ...payload,
+        message: payload.errors
+          .map((error) => `${error.path}: ${error.message}`)
+          .join(" "),
+      };
+    }
+    return payload;
+  } catch {
+    return {
+      message: response.ok
+        ? fallbackMessage
+        : `${fallbackMessage} Server responded with a non-JSON error.`,
+    };
+  }
+}
