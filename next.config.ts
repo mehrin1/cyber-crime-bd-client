@@ -50,6 +50,10 @@ const nextConfig: NextConfig = {
         source: "/api/community/:path*",
         destination: `${authServerURL}/api/community/:path*`,
       },
+      {
+        source: "/api/chat/:path*",
+        destination: `${authServerURL}/api/chat/:path*`,
+      },
     ];
   },
 };

@@ -2,6 +2,7 @@
 
 import {
   BarChart3,
+  ArrowUpRight,
   ClipboardList,
   MessageCircle,
   FileText,
@@ -214,6 +215,7 @@ export default function DashboardPage() {
             ))}
           </ActivityPanel>
         </section>
+        {profile.role === "ADMIN" ? <div className="mt-6"><Button variant="outline" render={<Link href="/chat?admin=true" />}>Review saved assistant chats <ArrowUpRight /></Button></div> : null}
       </div>
     </main>
   );
