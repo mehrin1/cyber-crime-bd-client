@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { authClient } from "@/lib/auth-client";
+import { SafeBotPanel } from "@/components/features/chat/SafeBot";
 
 type HelpCategory =
   | "LEGAL"
@@ -235,6 +236,10 @@ export default function HelpPage() {
             text="Keep original links, screenshots, usernames, dates, transaction references, and threatening messages."
           />
         </div>
+        <section className="mb-8">
+          <div className="mb-4"><p className="text-sm font-bold text-teal-800">SafeBot assistant</p><h2 className="mt-1 text-2xl font-black">Start with a private, guided question</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">SafeBot searches CyberSafeBD&apos;s guidance before answering. Your saved chats are visible only to you and authorized administrators.</p></div>
+          <SafeBotPanel embedded />
+        </section>
         <div className="grid gap-8 xl:grid-cols-[0.95fr_1.05fr]">
           <HelpRequestForm
             signedIn={Boolean(session?.user)}

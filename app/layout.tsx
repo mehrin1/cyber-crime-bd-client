@@ -1,6 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
+import { SafeBotLauncher } from "@/components/features/chat/SafeBot";
 
 
 export default function RootLayout({
@@ -19,6 +20,7 @@ export default function RootLayout({
           {children}
         </div>
         <Footer />
+        <SafeBotLauncher />
         </body>
     </html>
   );

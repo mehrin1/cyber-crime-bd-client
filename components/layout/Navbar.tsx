@@ -87,10 +87,6 @@ const Navbar = ({
       title: "Community",
       url: "/community",
     },
-    {
-      title: "Chat assistant",
-      url: "/chat",
-    },
 
     {
       title: "Laws",
