@@ -56,13 +56,13 @@ const steps = [
 
 export default function ResearchPage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f7f9fb] text-slate-950">
-      <section className="relative bg-[#082f49] px-5 py-14 text-white sm:px-8 lg:px-12 lg:py-20">
+    <main className="page-shell overflow-hidden bg-transparent">
+      <section className="page-hero bg-[#092d2a]">
         <div className="absolute inset-0 opacity-60 [background-image:linear-gradient(rgba(125,211,252,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(125,211,252,0.1)_1px,transparent_1px)] [background-size:36px_36px]" />
         <div className="absolute -top-32 right-[-6rem] size-96 rounded-full bg-cyan-400/20 blur-3xl" />
-        <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+        <div className="page-container relative grid gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
           <div>
-            <p className="flex items-center gap-2 text-sm font-bold tracking-[0.16em] text-sky-200 uppercase">
+            <p className="info-chip border-sky-300/25 text-sky-100">
               <Database className="size-4" /> Cyber Safe BD research programme
             </p>
             <h1 className="mt-5 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
@@ -95,7 +95,7 @@ export default function ResearchPage() {
               Never submit passwords, PINs, OTPs, or account credentials.
             </p>
           </div>
-          <div className="rounded-3xl border border-white/15 bg-white/10 p-5 shadow-2xl shadow-slate-950/20 backdrop-blur sm:p-6">
+          <div className="hero-panel p-5 sm:p-6">
             <div className="rounded-2xl bg-white p-5 text-slate-950">
               <div className="flex items-start justify-between gap-5">
                 <div>
@@ -133,10 +133,11 @@ export default function ResearchPage() {
           </div>
         </div>
       </section>
-      <section className="mx-auto max-w-7xl px-5 py-12 sm:px-8 lg:px-12">
+      <section className="section-block">
+        <div className="page-container">
         <div className="flex flex-wrap items-end justify-between gap-5">
           <div>
-            <p className="text-sm font-bold tracking-[0.14em] text-sky-800 uppercase">
+            <p className="section-kicker text-sky-800">
               Research focus
             </p>
             <h2 className="mt-2 text-3xl font-black tracking-tight">
@@ -151,7 +152,7 @@ export default function ResearchPage() {
           {researchPillars.map(({ icon: Icon, title, description, tone }) => (
             <article
               key={title}
-              className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+              className="interactive-card p-5"
             >
               <div
                 className={`flex size-10 items-center justify-center rounded-xl ${tone}`}
@@ -165,12 +166,13 @@ export default function ResearchPage() {
             </article>
           ))}
         </div>
+        </div>
       </section>
       <section className="border-y border-slate-200 bg-white px-5 py-12 sm:px-8 lg:px-12">
-        <div className="mx-auto max-w-7xl">
+        <div className="page-container">
           <div className="grid gap-8 lg:grid-cols-[0.75fr_1.25fr]">
             <div>
-              <p className="text-sm font-bold tracking-[0.14em] text-sky-800 uppercase">
+              <p className="section-kicker text-sky-800">
                 Participation journey
               </p>
               <h2 className="mt-3 text-3xl font-black tracking-tight">
@@ -183,7 +185,7 @@ export default function ResearchPage() {
             </div>
             <div className="grid gap-3 md:grid-cols-3">
               {steps.map(([number, title, description]) => (
-                <article key={number} className="rounded-2xl bg-slate-50 p-5">
+                <article key={number} className="surface-card-muted p-5">
                   <p className="text-sm font-black text-sky-700">{number}</p>
                   <h3 className="mt-6 font-extrabold">{title}</h3>
                   <p className="mt-2 text-sm leading-6 text-slate-600">
@@ -195,8 +197,8 @@ export default function ResearchPage() {
           </div>
         </div>
       </section>
-      <section className="mx-auto grid max-w-7xl gap-5 px-5 py-12 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:px-12">
-        <div className="rounded-3xl bg-[#0f766e] p-7 text-white sm:p-9">
+      <section className="page-container grid gap-5 px-5 py-12 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:px-12">
+        <div className="rounded-[1.9rem] bg-[#0f766e] p-7 text-white shadow-[0_24px_60px_-34px_rgba(15,118,110,0.8)] sm:p-9">
           <p className="text-sm font-bold tracking-[0.14em] text-teal-100 uppercase">
             Contribute
           </p>
@@ -215,7 +217,7 @@ export default function ResearchPage() {
             Start the survey <ArrowUpRight />
           </Button>
         </div>
-        <div className="rounded-3xl border border-slate-200 bg-white p-7 sm:p-9">
+        <div className="surface-card p-7 sm:p-9">
           <CheckCircle2 className="size-8 text-sky-700" />
           <h2 className="mt-5 text-2xl font-black">Already participated?</h2>
           <p className="mt-3 text-sm leading-6 text-slate-600">

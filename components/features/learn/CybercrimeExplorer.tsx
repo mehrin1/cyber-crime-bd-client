@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   ArrowRight,
   BookOpen,
@@ -8,7 +9,6 @@ import {
   Search,
   ShieldAlert,
 } from "lucide-react";
-import Link from "next/link";
 import { useDeferredValue, useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -39,7 +39,9 @@ export function CybercrimeExplorer() {
     const query = new URLSearchParams();
     if (deferredSearch) query.set("search", deferredSearch);
     if (category) query.set("category", category);
+
     const controller = new AbortController();
+
     void fetch(`/api/crimes?${query.toString()}`, { signal: controller.signal })
       .then(async (response) => {
         const payload = await response.json();
@@ -49,11 +51,13 @@ export function CybercrimeExplorer() {
       .catch((error: unknown) => {
         if ((error as { name?: string }).name !== "AbortError") setCrimes([]);
       });
+
     return () => controller.abort();
   }, [deferredSearch, category]);
 
   const selected =
     crimes?.find((crime) => crime.slug === selectedSlug) || crimes?.[0];
+
   const categories = [
     "Fraud and deception",
     "Unauthorised access",
@@ -65,25 +69,29 @@ export function CybercrimeExplorer() {
   ];
 
   return (
-    <div className="space-y-7">
-      <section className="overflow-hidden rounded-3xl bg-[linear-gradient(125deg,#3b0764,#7e22ce_52%,#db2777)] px-6 py-11 text-white shadow-xl shadow-fuchsia-950/15 sm:px-10 sm:py-14">
-        <p className="text-xs font-semibold tracking-[0.2em] text-fuchsia-200 uppercase">
-          Cybercrime guide
-        </p>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-          Recognise the harm. Protect the evidence. Find the legal pathway.
-        </h1>
-        <p className="mt-5 max-w-2xl text-base leading-7 text-fuchsia-100">
-          Explore major cybercrime categories and common variants, with
-          immediate safety steps, evidence checklists, and live references to
-          the legal library.
-        </p>
+    <>
+      <section className="page-hero bg-[#092d2a]">
+        <div className="page-container">
+          <p className="info-chip border-teal-300/20 text-teal-100">
+            Cybercrime guide
+          </p>
+          <h1 className="mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">
+            Recognise the harm. Protect the evidence. Find the legal pathway.
+          </h1>
+          <p className="mt-5 max-w-2xl text-base leading-7 text-teal-50/80 sm:text-lg">
+            Explore major cybercrime categories and common variants, with
+            immediate safety steps, evidence checklists, and live references to
+            the legal library.
+          </p>
+        </div>
       </section>
-      <Card className="border bg-background">
+
+      <div className="page-container space-y-7 px-5 py-10 sm:px-8 lg:px-12 lg:py-14">
+      <Card className="surface-card border-0 bg-background shadow-none">
         <CardContent className="p-5">
           <label className="relative block">
             <span className="sr-only">Search cybercrime types</span>
-            <Search className="absolute top-2.5 left-3 size-4 text-muted-foreground" />
+            <Search className="absolute top-3.5 left-3 size-4 text-muted-foreground" />
             <Input
               className="pl-9"
               value={search}
@@ -93,6 +101,7 @@ export function CybercrimeExplorer() {
           </label>
         </CardContent>
       </Card>
+
       {!crimes ? (
         <p className="text-sm text-muted-foreground">
           Loading cybercrime guide...
@@ -103,16 +112,19 @@ export function CybercrimeExplorer() {
             <label className="mb-4 grid max-w-sm gap-2 text-sm font-medium">
               Filter by cybercrime category
               <select
-                className="h-9 rounded-lg border bg-background px-3 text-sm"
+                className="h-11 rounded-xl border border-slate-200 bg-background px-3 text-sm font-medium"
                 value={category}
                 onChange={(event) => setCategory(event.target.value)}
               >
                 <option value="">All cybercrime types</option>
                 {categories.map((item) => (
-                  <option key={item} value={item}>{item}</option>
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
                 ))}
               </select>
             </label>
+
             <div className="grid gap-4 md:grid-cols-2">
               {crimes.map((crime) => (
                 <button
@@ -122,15 +134,17 @@ export function CybercrimeExplorer() {
                   className="text-left"
                 >
                   <Card
-                    className={`h-full border transition hover:-translate-y-0.5 hover:shadow-md ${selected?.id === crime.id ? "border-fuchsia-500 ring-2 ring-fuchsia-500/15" : ""}`}
+                    className={`h-full transition ${
+                      selected?.id === crime.id
+                        ? "border-teal-600 ring-2 ring-teal-600/15"
+                        : "hover:-translate-y-0.5 hover:shadow-md"
+                    }`}
                   >
                     <CardHeader className="pb-3">
-                      <p className="text-xs font-semibold tracking-wide text-fuchsia-700 uppercase">
+                      <p className="text-xs font-semibold tracking-wide text-teal-700 uppercase">
                         {crime.category}
                       </p>
-                      <CardTitle className="mt-2 text-lg">
-                        {crime.name}
-                      </CardTitle>
+                      <CardTitle className="mt-2 text-lg">{crime.name}</CardTitle>
                     </CardHeader>
                     <CardContent>
                       <p className="line-clamp-3 text-sm leading-6 text-muted-foreground">
@@ -145,16 +159,17 @@ export function CybercrimeExplorer() {
               ))}
             </div>
           </div>
+
           <aside className="xl:sticky xl:top-6">
             {selected ? (
-              <Card className="overflow-hidden border shadow-lg shadow-slate-950/5">
-                <CardHeader className="bg-[linear-gradient(120deg,#fdf4ff,#faf5ff)] p-6">
+              <Card className="overflow-hidden shadow-lg shadow-slate-950/5">
+                <CardHeader className="bg-[linear-gradient(120deg,#ecfdf5,#f0fdfa)] p-6">
                   <div className="flex gap-3">
-                    <span className="grid size-10 place-items-center rounded-xl bg-fuchsia-700 text-white">
+                    <span className="grid size-10 place-items-center rounded-xl bg-teal-700 text-white">
                       <ShieldAlert className="size-5" />
                     </span>
                     <div>
-                      <p className="text-xs font-semibold tracking-wide text-fuchsia-700 uppercase">
+                      <p className="text-xs font-semibold tracking-wide text-teal-700 uppercase">
                         {selected.category}
                       </p>
                       <CardTitle className="mt-2 text-xl leading-7">
@@ -167,6 +182,7 @@ export function CybercrimeExplorer() {
                   <p className="text-sm leading-7 text-muted-foreground">
                     {selected.description}
                   </p>
+
                   <div>
                     <h2 className="text-sm font-semibold">Common forms</h2>
                     <div className="mt-3 flex flex-wrap gap-2">
@@ -180,6 +196,7 @@ export function CybercrimeExplorer() {
                       ))}
                     </div>
                   </div>
+
                   <div>
                     <h2 className="flex items-center gap-2 text-sm font-semibold">
                       <CheckCircle2 className="size-4 text-emerald-600" />
@@ -188,7 +205,7 @@ export function CybercrimeExplorer() {
                     <ol className="mt-3 space-y-2 text-sm leading-6 text-muted-foreground">
                       {selected.immediateSteps.map((step, index) => (
                         <li key={step} className="flex gap-3">
-                          <span className="font-semibold text-fuchsia-700">
+                          <span className="font-semibold text-teal-700">
                             {index + 1}.
                           </span>
                           {step}
@@ -196,6 +213,7 @@ export function CybercrimeExplorer() {
                       ))}
                     </ol>
                   </div>
+
                   <div>
                     <h2 className="flex items-center gap-2 text-sm font-semibold">
                       <FileSearch className="size-4 text-sky-700" />
@@ -207,6 +225,7 @@ export function CybercrimeExplorer() {
                       ))}
                     </ul>
                   </div>
+
                   <div>
                     <h2 className="flex items-center gap-2 text-sm font-semibold">
                       <BookOpen className="size-4 text-amber-600" />
@@ -217,14 +236,15 @@ export function CybercrimeExplorer() {
                         <Link
                           key={id}
                           href={`/laws?law=${law.slug}`}
-                          className="flex items-center justify-between gap-3 rounded-xl border p-3 text-sm font-medium transition hover:border-fuchsia-300 hover:bg-fuchsia-50"
+                          className="flex items-center justify-between gap-3 rounded-xl border p-3 text-sm font-medium transition hover:border-teal-300 hover:bg-teal-50"
                         >
                           <span>{law.title}</span>
-                          <ArrowRight className="size-4 shrink-0 text-fuchsia-700" />
+                          <ArrowRight className="size-4 shrink-0 text-teal-700" />
                         </Link>
                       ))}
                     </div>
                   </div>
+
                   <Button
                     render={<Link href="/laws" />}
                     nativeButton={false}
@@ -249,6 +269,7 @@ export function CybercrimeExplorer() {
           </aside>
         </section>
       )}
-    </div>
+      </div>
+    </>
   );
 }

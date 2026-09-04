@@ -99,11 +99,11 @@ export default function ProfessionalsPage() {
     ...Array.from(new Set(resources.map((resource) => resource.serviceType))),
   ];
   return (
-    <main className="min-h-screen bg-[#f6f8f6] pb-16 text-slate-950">
-      <section className="overflow-hidden bg-[#092d2a] px-5 py-12 text-white sm:px-8 lg:px-12">
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+    <main className="page-shell bg-transparent">
+      <section className="page-hero bg-[#092d2a]">
+        <div className="page-container grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
           <div>
-            <p className="mb-4 flex items-center gap-2 text-sm font-bold tracking-[0.16em] text-teal-200 uppercase">
+            <p className="info-chip mb-4 border-teal-300/20 text-teal-100">
               <HeartHandshake className="size-4" /> Professional advice &
               emergency support
             </p>
@@ -116,7 +116,7 @@ export default function ProfessionalsPage() {
               technical support.
             </p>
           </div>
-          <div className="rounded-2xl border border-rose-300/30 bg-rose-500/15 p-5 shadow-2xl shadow-black/20">
+          <div className="hero-panel p-5">
             <div className="flex items-start gap-3">
               <Siren className="mt-0.5 size-6 shrink-0 text-rose-200" />
               <div>
@@ -136,8 +136,8 @@ export default function ProfessionalsPage() {
           </div>
         </div>
       </section>
-      <section className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
-        <div className="relative -mt-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl shadow-slate-900/8 sm:p-5">
+      <section className="page-container px-5 sm:px-8 lg:px-12">
+        <div className="surface-card relative -mt-8 p-4 sm:p-5">
           <div className="grid gap-3 lg:grid-cols-[1.5fr_repeat(3,0.7fr)]">
             <label className="relative block">
               <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-slate-400" />
@@ -146,7 +146,7 @@ export default function ProfessionalsPage() {
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search: hacked account, harassment, legal aid..."
-                className="h-11 w-full rounded-lg border border-slate-200 bg-slate-50 pr-3 pl-10 text-sm outline-none transition focus:border-teal-600 focus:ring-3 focus:ring-teal-100"
+                className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50/80 pr-3 pl-10 text-sm outline-none transition focus:border-teal-600 focus:ring-3 focus:ring-teal-100"
               />
             </label>
             <Select
@@ -261,7 +261,7 @@ function Select({
         aria-label={label}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-medium outline-none transition focus:border-teal-600 focus:ring-3 focus:ring-teal-100"
+        className="h-11 w-full rounded-xl border border-slate-200 bg-white/90 px-3 text-sm font-medium outline-none transition focus:border-teal-600 focus:ring-3 focus:ring-teal-100"
       >
         {options.map(([optionValue, optionLabel]) => (
           <option key={optionValue} value={optionValue}>
@@ -276,7 +276,7 @@ function ResourceCard({ resource }: { resource: SupportResource }) {
   const isImmediate = resource.urgency === "IMMEDIATE";
   return (
     <article
-      className={`group flex flex-col rounded-2xl border bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg ${isImmediate ? "border-rose-200" : "border-slate-200"}`}
+      className={`interactive-card group flex flex-col p-5 ${isImmediate ? "border-rose-200" : "border-slate-200"}`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-wrap gap-2">
@@ -351,7 +351,7 @@ function GuidanceCard({
   text: string;
 }) {
   return (
-    <article className="rounded-2xl border border-teal-100 bg-teal-50/60 p-5">
+    <article className="surface-card-muted p-5">
       <div className="flex size-9 items-center justify-center rounded-xl bg-teal-700 text-white">
         {icon}
       </div>

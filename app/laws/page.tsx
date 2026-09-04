@@ -3,12 +3,10 @@ import { Suspense } from "react";
 
 export default function LawsPage() {
   return (
-    <main className="bg-muted/30">
-      <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:py-14">
-        <Suspense fallback={<p className="p-6 text-sm text-muted-foreground">Loading legal library...</p>}>
-      <LawLibrary />
-    </Suspense>
-      </section>
+    <main className="page-shell">
+      <Suspense fallback={<p className="page-container px-5 py-10 text-sm text-muted-foreground sm:px-8 lg:px-12">Loading legal library...</p>}>
+        <LawLibrary />
+      </Suspense>
     </main>
   );
 }

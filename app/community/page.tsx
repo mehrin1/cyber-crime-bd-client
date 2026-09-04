@@ -219,10 +219,10 @@ export default function CommunityPage() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f6f7f4] px-5 py-10 sm:px-8 lg:px-12">
-      <div className="mx-auto max-w-5xl">
-        <section className="overflow-hidden rounded-[2rem] bg-[#092d2a] px-6 py-9 text-white shadow-xl shadow-teal-950/10 sm:px-10">
-          <p className="text-sm font-bold tracking-[0.16em] text-teal-200 uppercase">CyberSafeBD community</p>
+    <main className="page-shell bg-transparent">
+      <section className="page-hero bg-[#092d2a]">
+        <div className="page-container">
+          <p className="info-chip border-teal-300/20 text-teal-100">CyberSafeBD community</p>
           <div className="mt-3 flex flex-wrap items-end justify-between gap-5">
             <div>
               <h1 className="max-w-2xl text-3xl font-black tracking-tight sm:text-5xl">Share what helped. Learn from people who understand.</h1>
@@ -234,9 +234,11 @@ export default function CommunityPage() {
               </Button>
             ) : null}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-7 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
+      <div className="page-container px-5 py-10 sm:px-8 lg:px-12 lg:py-14">
+        <section className="surface-card p-5 sm:p-6">
           {session?.user ? (
             <form onSubmit={submitPost} className="space-y-3">
               <div className="flex items-center gap-2 text-sm font-extrabold text-slate-800"><PenLine className="size-4 text-teal-700" /> Share your experience</div>
@@ -276,11 +278,11 @@ export default function CommunityPage() {
 }
 
 function PostCard({ post, comments, commentsOpen, commentText, isCommenting, isLiking, onLike, onToggleComments, onCommentTextChange, onSubmitComment }: { post: CommunityPost; comments: CommunityComment[]; commentsOpen: boolean; commentText: string; isCommenting: boolean; isLiking: boolean; onLike: () => void; onToggleComments: () => void; onCommentTextChange: (value: string) => void; onSubmitComment: (event: FormEvent<HTMLFormElement>) => void }) {
-  return <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6"><div className="flex items-center gap-3"><Avatar name={post.author.name} /><div><p className="text-sm font-extrabold text-slate-900">{post.author.name}</p><p className="text-xs text-slate-500">{formatDate(post.createdAt)}</p></div></div><h3 className="mt-5 text-lg font-black text-slate-950">{post.title}</h3><p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">{post.content}</p><div className="mt-5 flex items-center gap-2 border-t border-slate-100 pt-4"><Button variant={post.likedByCurrentUser ? "default" : "ghost"} size="sm" disabled={isLiking} onClick={onLike} aria-label="Like post"><Heart className={post.likedByCurrentUser ? "fill-current" : ""} /> {post.likeCount}</Button><Button variant="ghost" size="sm" onClick={onToggleComments} aria-expanded={commentsOpen}><MessageCircle /> {post.commentCount} {commentsOpen ? "Hide comments" : "Comments"}</Button></div>{commentsOpen ? <div className="mt-4 border-t border-slate-100 pt-4"><div className="space-y-3">{comments.length ? comments.map((comment) => <div key={comment.id} className="rounded-xl bg-slate-50 p-3"><p className="text-xs font-extrabold text-slate-800">{comment.author.name} <span className="ml-1 font-normal text-slate-400">{formatDate(comment.createdAt)}</span></p><p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{comment.content}</p></div>) : <p className="text-sm text-slate-500">No comments yet. Start the conversation.</p>}</div><form onSubmit={onSubmitComment} className="mt-4 flex gap-2"><Input value={commentText} onChange={(event) => onCommentTextChange(event.target.value)} placeholder="Write a comment" maxLength={1500} /><Button type="submit" size="sm" disabled={isCommenting || !commentText.trim()}>{isCommenting ? <LoaderCircle className="animate-spin" /> : <Send />}</Button></form></div> : null}</article>;
+  return <article className="surface-card p-5 sm:p-6"><div className="flex items-center gap-3"><Avatar name={post.author.name} /><div><p className="text-sm font-extrabold text-slate-900">{post.author.name}</p><p className="text-xs text-slate-500">{formatDate(post.createdAt)}</p></div></div><h3 className="mt-5 text-lg font-black text-slate-950">{post.title}</h3><p className="mt-2 whitespace-pre-wrap text-sm leading-6 text-slate-700">{post.content}</p><div className="mt-5 flex items-center gap-2 border-t border-slate-100 pt-4"><Button variant={post.likedByCurrentUser ? "default" : "ghost"} size="sm" disabled={isLiking} onClick={onLike} aria-label="Like post"><Heart className={post.likedByCurrentUser ? "fill-current" : ""} /> {post.likeCount}</Button><Button variant="ghost" size="sm" onClick={onToggleComments} aria-expanded={commentsOpen}><MessageCircle /> {post.commentCount} {commentsOpen ? "Hide comments" : "Comments"}</Button></div>{commentsOpen ? <div className="mt-4 border-t border-slate-100 pt-4"><div className="space-y-3">{comments.length ? comments.map((comment) => <div key={comment.id} className="rounded-xl bg-slate-50 p-3"><p className="text-xs font-extrabold text-slate-800">{comment.author.name} <span className="ml-1 font-normal text-slate-400">{formatDate(comment.createdAt)}</span></p><p className="mt-1 whitespace-pre-wrap text-sm text-slate-700">{comment.content}</p></div>) : <p className="text-sm text-slate-500">No comments yet. Start the conversation.</p>}</div><form onSubmit={onSubmitComment} className="mt-4 flex gap-2"><Input value={commentText} onChange={(event) => onCommentTextChange(event.target.value)} placeholder="Write a comment" maxLength={1500} /><Button type="submit" size="sm" disabled={isCommenting || !commentText.trim()}>{isCommenting ? <LoaderCircle className="animate-spin" /> : <Send />}</Button></form></div> : null}</article>;
 }
 
 function Avatar({ name }: { name: string }) { return <div className="flex size-10 items-center justify-center rounded-full bg-teal-100 text-sm font-black text-teal-800">{name.slice(0, 1).toUpperCase()}</div>; }
-function EmptyFeed({ mine, search }: { mine: boolean; search: string }) { return <div className="mt-5 rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center"><MessageCircle className="mx-auto size-7 text-teal-700" /><h3 className="mt-3 font-extrabold text-slate-900">{mine ? "No posts from you yet" : search ? "No matching posts" : "No community posts yet"}</h3><p className="mt-2 text-sm text-slate-600">{mine ? "Share an experience above, or switch to the full community feed." : "Try a different search or check back soon."}</p></div>; }
+function EmptyFeed({ mine, search }: { mine: boolean; search: string }) { return <div className="surface-card mt-5 border-dashed p-10 text-center"><MessageCircle className="mx-auto size-7 text-teal-700" /><h3 className="mt-3 font-extrabold text-slate-900">{mine ? "No posts from you yet" : search ? "No matching posts" : "No community posts yet"}</h3><p className="mt-2 text-sm text-slate-600">{mine ? "Share an experience above, or switch to the full community feed." : "Try a different search or check back soon."}</p></div>; }
 function LoadingFeed() { return <div className="flex min-h-56 items-center justify-center gap-3 text-sm text-slate-500"><LoaderCircle className="size-5 animate-spin" /> Loading community posts</div>; }
 function formatDate(value: string) { return new Intl.DateTimeFormat("en-BD", { dateStyle: "medium" }).format(new Date(value)); }
 

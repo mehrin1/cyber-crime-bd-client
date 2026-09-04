@@ -72,11 +72,11 @@ const paths = [
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f6f8f7] text-slate-950">
-      <section className="relative overflow-hidden bg-[#092d2a] px-5 py-14 text-white sm:px-8 lg:px-12 lg:py-20">
+    <main className="page-shell overflow-hidden bg-transparent">
+      <section className="page-hero bg-[#092d2a]">
         <div className="absolute inset-0 opacity-50 [background-image:linear-gradient(rgba(153,246,228,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(153,246,228,0.1)_1px,transparent_1px)] [background-size:40px_40px]" />
         <div className="absolute top-[-12rem] right-[-8rem] size-[31rem] rounded-full bg-teal-300/15 blur-3xl" />
-        <div className="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+        <div className="page-container relative grid gap-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
           <div>
             <p className="flex items-center gap-2 text-sm font-bold tracking-[0.16em] text-teal-200 uppercase">
               <ShieldCheck className="size-4" /> CyberSafeBD ·
@@ -138,9 +138,10 @@ export default function HomePage() {
           </a>
         </div>
       </section>
-      <section className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:px-12">
+      <section className="section-block">
+        <div className="page-container">
         <div className="max-w-2xl">
-          <p className="text-sm font-bold tracking-[0.14em] text-teal-800 uppercase">
+          <p className="section-kicker text-teal-800">
             What CyberSafeBD offers
           </p>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
@@ -151,7 +152,7 @@ export default function HomePage() {
           {services.map(({ icon: Icon, title, text, href, action, tone }) => (
             <article
               key={title}
-              className="group rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+              className="interactive-card group p-5"
             >
               <div
                 className={`flex size-10 items-center justify-center rounded-xl ${tone}`}
@@ -162,19 +163,20 @@ export default function HomePage() {
               <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
               <Link
                 href={href}
-                className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-teal-800 hover:underline"
+                className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-teal-800 underline-offset-4 hover:underline"
               >
                 {action}
-                <ArrowUpRight className="size-4" />
+                <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </article>
           ))}
         </div>
+        </div>
       </section>
       <section className="border-y border-slate-200 bg-white px-5 py-14 sm:px-8 lg:px-12">
-        <div className="mx-auto grid max-w-7xl gap-9 lg:grid-cols-[0.75fr_1.25fr]">
+        <div className="page-container grid gap-9 lg:grid-cols-[0.75fr_1.25fr]">
           <div>
-            <p className="text-sm font-bold tracking-[0.14em] text-teal-800 uppercase">
+            <p className="section-kicker text-teal-800">
               A safer path
             </p>
             <h2 className="mt-3 text-3xl font-black tracking-tight">
@@ -188,7 +190,7 @@ export default function HomePage() {
           </div>
           <div className="grid gap-3 md:grid-cols-3">
             {paths.map(([number, title, text]) => (
-              <article key={number} className="rounded-2xl bg-[#f1f8f7] p-5">
+              <article key={number} className="surface-card-muted p-5">
                 <p className="text-sm font-black text-teal-700">{number}</p>
                 <h3 className="mt-7 font-extrabold">{title}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
@@ -197,9 +199,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <section className="mx-auto max-w-7xl px-5 py-14 sm:px-8 lg:px-12">
-        <div className="grid gap-5 lg:grid-cols-[1.12fr_0.88fr]">
-          <div className="rounded-3xl bg-[#123f5a] p-7 text-white sm:p-9">
+      <section className="section-block">
+        <div className="page-container grid gap-5 lg:grid-cols-[1.12fr_0.88fr]">
+          <div className="relative overflow-hidden rounded-[1.9rem] bg-[#123f5a] p-7 text-white shadow-[0_24px_60px_-34px_rgba(18,63,90,0.85)] sm:p-9">
+            <div className="absolute top-0 right-0 size-40 rounded-full bg-sky-300/10 blur-3xl" />
             <p className="text-sm font-bold tracking-[0.14em] text-sky-200 uppercase">
               Research & surveys
             </p>
@@ -227,7 +230,7 @@ export default function HomePage() {
               </Button>
             </div>
           </div>
-          <div className="rounded-3xl border border-slate-200 bg-white p-7 sm:p-9">
+          <div className="surface-card p-7 sm:p-9">
             <Landmark className="size-8 text-amber-700" />
             <h2 className="mt-5 text-2xl font-black">
               Find the correct official route.
@@ -248,7 +251,7 @@ export default function HomePage() {
         </div>
       </section>
       <section className="px-5 pb-14 sm:px-8 lg:px-12">
-        <div className="mx-auto max-w-7xl rounded-3xl border border-teal-200 bg-teal-50 p-7 sm:p-10">
+        <div className="page-container rounded-[1.9rem] border border-teal-200 bg-[linear-gradient(180deg,#ecfdf5,#dff7f0)] p-7 shadow-[0_18px_50px_-34px_rgba(15,118,110,0.45)] sm:p-10">
           <div className="grid gap-7 lg:grid-cols-[1fr_auto] lg:items-end">
             <div>
               <p className="flex items-center gap-2 text-sm font-bold tracking-[0.14em] text-teal-800 uppercase">
@@ -284,7 +287,7 @@ export default function HomePage() {
 
 function HomepageDemo() {
   return (
-    <div className="relative mx-auto w-full max-w-md">
+    <div className="float-soft relative mx-auto w-full max-w-md">
       <div className="absolute -inset-5 rounded-[2rem] bg-teal-300/10 blur-2xl" />
       <div className="relative rounded-3xl border border-white/15 bg-slate-950/35 p-4 shadow-2xl shadow-black/25 backdrop-blur">
         <div className="flex items-center justify-between border-b border-white/10 pb-3">

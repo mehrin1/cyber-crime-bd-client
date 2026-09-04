@@ -117,9 +117,9 @@ export default function DashboardPage() {
 
   const { profile, activity } = dashboard;
   return (
-    <main className="min-h-screen bg-[#f7f8f7] px-5 py-10 sm:px-8 lg:px-12">
+    <main className="page-shell bg-transparent px-5 py-10 sm:px-8 lg:px-12">
       <div className="mx-auto max-w-7xl">
-        <section className="rounded-3xl bg-[#092d2a] px-6 py-8 text-white sm:px-9">
+        <section className="page-hero rounded-[1.9rem] bg-[#092d2a] px-6 py-8 text-white shadow-[0_24px_60px_-38px_rgba(8,45,42,0.8)] sm:px-9 sm:py-9 lg:px-9 lg:py-9">
           <div className="flex flex-wrap items-start justify-between gap-6">
             <div>
               <p className="flex items-center gap-2 text-sm font-bold tracking-[0.14em] text-teal-200 uppercase">
@@ -136,7 +136,7 @@ export default function DashboardPage() {
                 will appear here.
               </p>
             </div>
-            <div className="rounded-2xl border border-white/15 bg-white/8 px-4 py-3 text-sm">
+            <div className="hero-panel px-4 py-3 text-sm">
               <p className="font-bold">{profile.email}</p>
               <p className="mt-1 text-teal-100/70">
                 {profile.role.toLowerCase()} account
@@ -287,7 +287,7 @@ function Metric({
   note: string;
 }) {
   return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <article className="surface-card p-5">
       <div className="flex size-9 items-center justify-center rounded-xl bg-teal-100 text-teal-800">
         {icon}
       </div>
@@ -314,7 +314,7 @@ function ActivityPanel({
     ? children.length > 0
     : Boolean(children);
   return (
-    <section className="rounded-2xl border bg-white p-5">
+    <section className="surface-card p-5">
       <div className="flex items-center justify-between gap-3">
         <h2 className="font-extrabold">{title}</h2>
         <Button variant="outline" size="sm" render={<Link href={actionHref} />}>

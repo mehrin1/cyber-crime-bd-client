@@ -101,10 +101,11 @@ export function AuthForm({ mode }: AuthFormProps) {
   }
 
   return (
-    <main className="flex min-h-[calc(100svh-300px)] items-center justify-center bg-muted/40 px-4 py-12">
-      <section className="w-full max-w-md rounded-2xl border bg-card p-6 shadow-sm sm:p-8">
-        <p className="text-sm font-medium text-primary">Cyber Safe BD</p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+    <main className="relative flex min-h-[calc(100svh-300px)] items-center justify-center overflow-hidden px-4 py-12">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(13,148,136,0.13),transparent_26rem),radial-gradient(circle_at_bottom_right,rgba(14,116,144,0.16),transparent_28rem)]" />
+      <section className="surface-card relative w-full max-w-md p-6 sm:p-8">
+        <p className="section-kicker text-primary">Cyber Safe BD</p>
+        <h1 className="mt-2 text-3xl font-black tracking-tight">
           {isRegistration ? "Create your account" : "Welcome back"}
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
@@ -115,16 +116,16 @@ export function AuthForm({ mode }: AuthFormProps) {
 
         <form className="mt-6 space-y-4" onSubmit={handleSubmit}>
           {isRegistration ? (
-            <label className="block space-y-1.5 text-sm font-medium">
+            <label className="block space-y-1.5 text-sm font-bold">
               Full name
               <Input name="name" autoComplete="name" required />
             </label>
           ) : null}
-          <label className="block space-y-1.5 text-sm font-medium">
+          <label className="block space-y-1.5 text-sm font-bold">
             Email address
             <Input name="email" type="email" autoComplete="email" required />
           </label>
-          <label className="block space-y-1.5 text-sm font-medium">
+          <label className="block space-y-1.5 text-sm font-bold">
             Password
             <Input
               name="password"
@@ -136,7 +137,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           </label>
 
           {message ? (
-            <p className="rounded-lg bg-destructive/10 px-3 py-2 text-sm text-destructive" role="alert">
+            <p className="rounded-xl bg-destructive/10 px-3 py-2 text-sm text-destructive" role="alert">
               {message}
             </p>
           ) : null}
@@ -150,7 +151,7 @@ export function AuthForm({ mode }: AuthFormProps) {
           </Button>
         </form>
 
-        <div className="my-6 flex items-center gap-3 text-xs text-muted-foreground before:h-px before:flex-1 before:bg-border after:h-px after:flex-1 after:bg-border">
+        <div className="my-6 flex items-center gap-3 text-xs font-bold tracking-[0.14em] text-muted-foreground uppercase before:h-px before:flex-1 before:bg-border after:h-px after:flex-1 after:bg-border">
           OR
         </div>
 

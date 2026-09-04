@@ -81,6 +81,7 @@
   --sidebar-ring: oklch(0.708 0 0);
   --background: oklch(0.975 0.012 90);
   --foreground: oklch(0.22 0.025 185);
+  --page-max: 80rem;
 }
 
 .dark {
@@ -123,7 +124,10 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: radial-gradient(circle at 10% -10%, oklch(0.9 0.06 172 / 0.35), transparent 28rem), radial-gradient(circle at 95% 15%, oklch(0.92 0.06 85 / 0.32), transparent 24rem);
+    background-image:
+      radial-gradient(circle at 10% -10%, oklch(0.9 0.06 172 / 0.35), transparent 28rem),
+      radial-gradient(circle at 95% 15%, oklch(0.92 0.06 85 / 0.32), transparent 24rem),
+      linear-gradient(180deg, oklch(0.99 0.01 95), oklch(0.97 0.015 92));
     font-family: "Aptos", "Segoe UI Variable", "Trebuchet MS", sans-serif;
   }
   html {
@@ -135,8 +139,70 @@
 }
 
 @keyframes soft-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes soft-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes sheen { from { transform: translateX(-140%) skewX(-22deg); } to { transform: translateX(220%) skewX(-22deg); } }
 
 main > section:first-child { animation: soft-rise 420ms ease-out both; }
+
+@layer components {
+  .page-shell {
+    @apply min-h-screen pb-16 text-slate-950;
+  }
+
+  .page-hero {
+    @apply relative overflow-hidden px-5 py-14 text-white sm:px-8 lg:px-12 lg:py-20;
+  }
+
+  .page-container {
+    @apply mx-auto max-w-7xl;
+  }
+
+  .section-block {
+    @apply px-5 py-12 sm:px-8 lg:px-12;
+  }
+
+  .section-kicker {
+    @apply text-sm font-bold tracking-[0.14em] uppercase;
+  }
+
+  .surface-card {
+    @apply rounded-[1.6rem] border border-white/65 bg-white/90 shadow-[0_18px_50px_-28px_rgba(15,23,42,0.28)] backdrop-blur-sm;
+  }
+
+  .surface-card-muted {
+    @apply rounded-[1.6rem] border border-teal-950/8 bg-white/65 shadow-[0_16px_40px_-30px_rgba(15,23,42,0.2)] backdrop-blur-sm;
+  }
+
+  .hero-panel {
+    @apply rounded-[1.8rem] border border-white/15 bg-white/10 shadow-2xl shadow-slate-950/20 backdrop-blur;
+  }
+
+  .info-chip {
+    @apply inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-bold tracking-[0.12em] uppercase;
+  }
+
+  .interactive-card {
+    @apply rounded-[1.45rem] border border-slate-200/90 bg-white/95 shadow-[0_16px_38px_-28px_rgba(15,23,42,0.35)] transition duration-200 hover:-translate-y-1 hover:shadow-[0_28px_60px_-30px_rgba(8,47,73,0.26)];
+  }
+
+  .section-grid-note {
+    @apply text-sm leading-6 text-slate-600;
+  }
+
+  .glossy-accent {
+    @apply relative overflow-hidden;
+  }
+
+  .glossy-accent::after {
+    content: "";
+    @apply pointer-events-none absolute inset-y-0 left-0 w-16 bg-white/20 opacity-0;
+    animation: sheen 2.8s ease-in-out infinite;
+  }
+
+  .float-soft {
+    animation: soft-float 5.5s ease-in-out infinite;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }

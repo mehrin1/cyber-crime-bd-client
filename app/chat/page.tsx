@@ -102,16 +102,16 @@ function ChatWorkspace() {
   if (isPending || !session?.user) return <Loading />;
 
   return (
-    <main className="min-h-screen bg-[#f6f7f4] px-4 py-7 sm:px-8 lg:px-12">
+    <main className="page-shell bg-transparent px-4 py-7 sm:px-8 lg:px-12">
       <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[18rem_1fr]">
-        <aside className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <aside className="surface-card p-4">
           <div className="flex items-center justify-between gap-3">
             <div><p className="text-xs font-bold tracking-[0.15em] text-teal-700 uppercase">{adminMode ? "Admin review" : "Private history"}</p><h1 className="mt-1 font-black text-slate-950">Chat assistant</h1></div>
             {!adminMode ? <Button size="sm" variant="outline" onClick={() => setActive(null)}><Plus /> New</Button> : null}
           </div>
           <div className="mt-4 space-y-2">
             {loading ? <p className="py-4 text-sm text-slate-500">Loading conversations...</p> : conversations.length ? conversations.map((conversation) => (
-              <button key={conversation.id} type="button" onClick={() => void selectConversation(conversation.id)} className={`w-full rounded-xl p-3 text-left text-sm transition ${active?.id === conversation.id ? "bg-teal-800 text-white" : "bg-slate-50 hover:bg-teal-50"}`}>
+              <button key={conversation.id} type="button" onClick={() => void selectConversation(conversation.id)} className={`w-full rounded-xl p-3 text-left text-sm transition ${active?.id === conversation.id ? "bg-teal-800 text-white shadow-sm" : "bg-slate-50 hover:bg-teal-50"}`}>
                 <p className="truncate font-bold">{conversation.title}</p>
                 {adminMode ? <p className="mt-1 truncate text-xs opacity-75">{conversation.user.name} · {conversation.user.email}</p> : null}
                 <p className="mt-1 text-xs opacity-65">{formatDate(conversation.updatedAt)} · {conversation._count.messages} messages</p>
@@ -119,7 +119,7 @@ function ChatWorkspace() {
             )) : <p className="py-4 text-sm text-slate-500">{adminMode ? "No saved conversations." : "Start a chat to save it here."}</p>}
           </div>
         </aside>
-        <section className="flex min-h-[38rem] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <section className="surface-card flex min-h-[38rem] flex-col overflow-hidden">
           <header className="border-b bg-[#092d2a] px-5 py-5 text-white sm:px-7"><div className="flex items-start gap-3"><div className="rounded-xl bg-white/10 p-2"><Bot className="size-5" /></div><div><h2 className="font-black">{adminMode ? active ? `${active.user.name}'s conversation` : "Select a conversation" : "CyberSafeBD knowledge assistant"}</h2><p className="mt-1 text-sm text-teal-50/75">{adminMode ? "Read-only access for moderation and support review." : "Answers are grounded in this site's laws, guidance, learning articles, and support resources."}</p></div></div></header>
           <div className="flex-1 space-y-5 overflow-y-auto p-5 sm:p-7">
             {active?.messages.length ? active.messages.map((message) => <ChatMessage key={message.id} message={message} />) : <EmptyState adminMode={adminMode} />}

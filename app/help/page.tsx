@@ -179,11 +179,11 @@ export default function HelpPage() {
     void loadRequests(selected.id);
   }
   return (
-    <main className="min-h-screen bg-[#f7f8f7] pb-16 text-slate-950">
-      <section className="bg-[#092d2a] px-5 py-12 text-white sm:px-8 lg:px-12">
-        <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+    <main className="page-shell bg-transparent">
+      <section className="page-hero bg-[#092d2a]">
+        <div className="page-container grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
           <div>
-            <p className="flex items-center gap-2 text-sm font-bold tracking-[0.14em] text-teal-200 uppercase">
+            <p className="info-chip border-teal-300/20 text-teal-100">
               <ShieldAlert className="size-4" /> Private support desk
             </p>
             <h1 className="mt-4 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl">
@@ -195,7 +195,7 @@ export default function HelpPage() {
               emergency-response service.
             </p>
           </div>
-          <div className="rounded-2xl border border-rose-300/30 bg-rose-500/15 p-5">
+          <div className="hero-panel p-5">
             <div className="flex gap-3">
               <Siren className="mt-0.5 size-6 shrink-0 text-rose-200" />
               <div>
@@ -216,7 +216,7 @@ export default function HelpPage() {
           </div>
         </div>
       </section>
-      <section className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+      <section className="page-container px-5 sm:px-8 lg:px-12">
         <div className="grid gap-4 py-8 md:grid-cols-3">
           <ActionCard
             icon={<AlertTriangle className="size-5" />}
@@ -237,7 +237,7 @@ export default function HelpPage() {
           />
         </div>
         <section className="mb-8">
-          <div className="mb-4"><p className="text-sm font-bold text-teal-800">SafeBot assistant</p><h2 className="mt-1 text-2xl font-black">Start with a private, guided question</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">SafeBot searches CyberSafeBD&apos;s guidance before answering. Your saved chats are visible only to you and authorized administrators.</p></div>
+          <div className="mb-4"><p className="section-kicker text-teal-800">SafeBot assistant</p><h2 className="mt-1 text-2xl font-black">Start with a private, guided question</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">SafeBot searches CyberSafeBD&apos;s guidance before answering. Your saved chats are visible only to you and authorized administrators.</p></div>
           <SafeBotPanel embedded />
         </section>
         <div className="grid gap-8 xl:grid-cols-[0.95fr_1.05fr]">
@@ -249,7 +249,7 @@ export default function HelpPage() {
             }}
           />
           {session?.user ? (
-            <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <section className="surface-card p-5">
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="text-sm font-bold text-teal-800">
@@ -362,8 +362,8 @@ function HelpRequestForm({
     onSubmitted(anonymous ? null : payload.data);
   }
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-      <p className="text-sm font-bold text-teal-800">Start a support request</p>
+    <section className="surface-card p-5 sm:p-6">
+      <p className="section-kicker text-teal-800">Start a support request</p>
       <h2 className="mt-1 text-2xl font-black">Tell us only what is needed</h2>
       <p className="mt-2 text-sm leading-6 text-slate-500">
         A clear timeline helps identify the safest next step. Do not include
@@ -486,7 +486,7 @@ function CaseConversation({
       </div>
     );
   return (
-    <div className="rounded-xl border border-slate-200">
+    <div className="surface-card-muted rounded-xl">
       <div className="border-b p-4">
         <p className="font-extrabold">{request.title}</p>
         <p className="mt-1 text-xs text-slate-500">
@@ -552,7 +552,7 @@ function ActionCard({
   action?: string;
 }) {
   return (
-    <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+    <article className="surface-card p-5">
       <div className="flex size-9 items-center justify-center rounded-xl bg-teal-100 text-teal-800">
         {icon}
       </div>
@@ -583,7 +583,7 @@ function EmptyCases() {
 }
 function SignedOutCaseNotice() {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="surface-card p-6">
       <LockKeyhole className="size-7 text-teal-800" />
       <h2 className="mt-4 text-2xl font-black">Track support privately</h2>
       <p className="mt-2 max-w-lg text-sm leading-6 text-slate-600">

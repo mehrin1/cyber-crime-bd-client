@@ -23,8 +23,8 @@ const groups = [
 
 export default function Footer() {
   return (
-    <footer className="mt-auto border-t border-teal-950/10 bg-[#eaf4f0]">
-      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 sm:px-8 md:grid-cols-[1.3fr_0.7fr_0.7fr] lg:px-12">
+    <footer className="mt-auto border-t border-teal-950/10 bg-[linear-gradient(180deg,#f0f8f5,#e4f0eb)]">
+      <div className="page-container grid gap-8 px-5 py-12 sm:px-8 md:grid-cols-[1.3fr_0.7fr_0.7fr] lg:px-12">
         <div>
           <Link
             href="/"
@@ -36,6 +36,9 @@ export default function Footer() {
             A Bangladesh-focused cyber-safety project for practical learning,
             legal references, official support routes, and privacy-aware
             research.
+          </p>
+          <p className="mt-4 inline-flex rounded-full border border-teal-950/10 bg-white/70 px-3 py-1 text-[11px] font-bold tracking-[0.14em] text-teal-800 uppercase">
+            Clear guidance, safer decisions
           </p>
         </div>
         {groups.map((group) => (
@@ -58,10 +61,12 @@ export default function Footer() {
           </div>
         ))}
       </div>
-      <div className="border-t border-teal-950/10 px-5 py-4 text-center text-xs text-slate-500 sm:px-8">
-        CyberSafeBD provides informational support and does not replace
-        emergency, legal, medical, or law-enforcement services. In immediate
-        danger in Bangladesh, call 999.
+      <div className="border-t border-teal-950/10 bg-white/35">
+        <p className="page-container px-5 py-4 text-center text-xs text-slate-500 sm:px-8 lg:px-12">
+          CyberSafeBD provides informational support and does not replace
+          emergency, legal, medical, or law-enforcement services. In immediate
+          danger in Bangladesh, call 999.
+        </p>
       </div>
     </footer>
   );
