@@ -23,12 +23,12 @@ const groups = [
 
 export default function Footer() {
   return (
-    <footer className="mt-auto border-t border-slate-200 bg-[#f7f8f7]">
-      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-10 sm:px-8 md:grid-cols-[1.3fr_0.7fr_0.7fr] lg:px-12">
+    <footer className="mt-auto border-t border-teal-950/10 bg-[#eaf4f0]">
+      <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 sm:px-8 md:grid-cols-[1.3fr_0.7fr_0.7fr] lg:px-12">
         <div>
           <Link
             href="/"
-            className="text-lg font-black tracking-tight text-teal-900"
+            className="text-xl font-black tracking-tight text-[#092d2a]"
           >
             CyberSafeBD
           </Link>
@@ -40,15 +40,15 @@ export default function Footer() {
         </div>
         {groups.map((group) => (
           <div key={group.title}>
-            <h2 className="text-sm font-extrabold text-slate-900">
+            <h2 className="text-xs font-black tracking-[0.12em] text-teal-900 uppercase">
               {group.title}
             </h2>
-            <ul className="mt-3 space-y-2 text-sm text-slate-600">
+            <ul className="mt-4 space-y-2.5 text-sm text-slate-600">
               {group.links.map(([label, href]) => (
                 <li key={href}>
                   <Link
                     href={href}
-                    className="hover:text-teal-800 hover:underline"
+                    className="transition-colors hover:text-teal-800 hover:underline"
                   >
                     {label}
                   </Link>
@@ -58,7 +58,7 @@ export default function Footer() {
           </div>
         ))}
       </div>
-      <div className="border-t border-slate-200 px-5 py-4 text-center text-xs text-slate-500 sm:px-8">
+      <div className="border-t border-teal-950/10 px-5 py-4 text-center text-xs text-slate-500 sm:px-8">
         CyberSafeBD provides informational support and does not replace
         emergency, legal, medical, or law-enforcement services. In immediate
         danger in Bangladesh, call 999.

@@ -1,315 +1,40 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 
-import { LayoutDashboard, LogOut, Menu } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, ShieldCheck, X } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { cn } from "@/lib/utils";
-import { authClient } from "@/lib/auth-client";
-
-import { Accordion } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { cn } from "@/lib/utils";
 
-interface MenuItem {
-  title: string;
-  url: string;
-  description?: string;
-  icon?: React.ReactNode;
-  items?: MenuItem[];
-}
+const links = [["Learn", "/learn"], ["Laws", "/laws"], ["Resources", "/professionals"], ["Research", "/research"], ["Community", "/community"], ["Seek help", "/help"]] as const;
 
-interface Navbar1Props {
-  className?: string;
-  logo?: {
-    url: string;
-    src: string;
-    alt: string;
-    title: string;
-    className?: string;
-  };
-  menu?: MenuItem[];
-  auth?: {
-    login: {
-      title: string;
-      url: string;
-    };
-    signup: {
-      title: string;
-      url: string;
-    };
-  };
-}
-
-const Navbar = ({
-  logo = {
-    url: "/",
-    src: "https://deifkwefumgah.cloudfront.net/shadcnblocks/block/logos/shadcnblockscom-icon.svg",
-    alt: "logo",
-    title: "Cyber Crime BD",
-  },
-  menu = [
-    {
-      title: "Home",
-      url: "/",
-    },
-    {
-      title: "Types of Cyber Crimes",
-      url: "/learn",
-    },
-    {
-      title: "Research & Surveys",
-      url: "/research",
-    },
-    {
-      title: "Professional Advice",
-      url: "/professionals",
-    },
-    {
-      title: "Seek Help",
-      url: "/help",
-    },
-    {
-      title: "Community",
-      url: "/community",
-    },
-
-    {
-      title: "Laws",
-      url: "/laws",
-    },
-
-    {
-      title: "About",
-      url: "/about",
-    },
-  ],
-  auth = {
-    login: { title: "Login", url: "/login" },
-    signup: { title: "Register", url: "/register" },
-  },
-  className,
-}: Navbar1Props) => {
+export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
-  const [isSigningOut, setIsSigningOut] = useState(false);
-  const callbackURL =
-    pathname === "/login" || pathname === "/register" ? "/" : pathname;
-  const loginURL = `${auth.login.url}?callbackURL=${encodeURIComponent(callbackURL)}`;
-  const registrationURL = `${auth.signup.url}?callbackURL=${encodeURIComponent(callbackURL)}`;
-  const user = session?.user;
+  const [open, setOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+  const callbackURL = pathname === "/login" || pathname === "/register" ? "/" : pathname;
 
-  async function handleSignOut() {
-    setIsSigningOut(true);
-
+  async function signOut() {
+    setSigningOut(true);
     const result = await authClient.signOut();
-
-    if (!result.error) {
-      router.push("/");
-      router.refresh();
-    }
-
-    setIsSigningOut(false);
+    if (!result.error) { router.push("/"); router.refresh(); }
+    setSigningOut(false);
   }
 
-  //   const { user } = useAuth() as { user: UserSchema | null };
-  // const { user } = useAuth() as { user: { role?: string } } ;
+  const authActions = !isPending && session?.user ? <><Button size="sm" variant="outline" render={<Link href="/dashboard" />}><LayoutDashboard /> Dashboard</Button><Button size="sm" variant="ghost" disabled={signingOut} onClick={signOut}><LogOut /> {signingOut ? "Signing out" : "Sign out"}</Button></> : !isPending ? <><Button size="sm" variant="ghost" render={<Link href={`/login?callbackURL=${encodeURIComponent(callbackURL)}`} />}>Sign in</Button><Button size="sm" render={<Link href={`/register?callbackURL=${encodeURIComponent(callbackURL)}`} />}>Create account</Button></> : null;
 
-  // if (isLoading) {
-  //   console.log("loading");
-  // }
-  // const totalItems = useCartStore((state) => state.totalItems);
-
-  return (
-    <section className={cn("py-4 ", className)}>
-      <div className="container mx-auto px-4">
-        {/* Desktop Menu */}
-        <nav className="hidden items-center justify-between lg:flex">
-          <div className="flex items-center gap-6">
-            {/* Logo */}
-            <a href={logo.url} className="flex items-center gap-2">
-              <img
-                src={logo.src}
-                className="max-h-8 dark:invert"
-                alt={logo.alt}
-              />
-              <span className="text-lg font-semibold tracking-tighter">
-                {logo.title}
-              </span>
-            </a>
-            <div className="flex items-center">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  {menu.map((item) => renderMenuItem(item))}
-                </NavigationMenuList>
-              </NavigationMenu>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            {!isPending && user ? (
-              <>
-                <span
-                  className="flex items-center px-2 text-sm font-medium"
-                  aria-label="Signed in user"
-                >
-                  {user.name}
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  render={<Link href="/dashboard" />}
-                >
-                  <LayoutDashboard />
-                  Dashboard
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  disabled={isSigningOut}
-                  onClick={handleSignOut}
-                >
-                  <LogOut />
-                  {isSigningOut ? "Signing out..." : "Sign out"}
-                </Button>
-              </>
-            ) : !isPending ? (
-              <>
-                <Button variant="outline" size="sm">
-                  <Link href={loginURL}>{auth.login.title}</Link>
-                </Button>
-                <Button size="sm">
-                  <Link href={registrationURL}>{auth.signup.title}</Link>
-                </Button>
-              </>
-            ) : null}
-          </div>
-        </nav>
-
-        {/* Mobile Menu */}
-        <div className="block lg:hidden">
-          <div className="flex items-center justify-between">
-            <Link href={logo.url} className="flex items-center gap-2">
-              <img
-                src={logo.src}
-                className="max-h-8 dark:invert"
-                alt={logo.alt}
-              />
-            </Link>
-
-            <div className="flex items-center gap-2">
-              {/* --- Cart Icon Mobile --- */}
-              <Link href="/cart">
-                <Button variant="ghost" size="icon" className="relative mr-2">
-                  checking
-                </Button>
-              </Link>
-
-              <Sheet>
-                <SheetTrigger
-                  render={
-                    <Button variant="outline" size="icon">
-                      <Menu className="size-4" />
-                    </Button>
-                  }
-                />
-                <SheetContent className="overflow-y-auto">
-                  <SheetHeader>
-                    <SheetTitle>
-                      <Link href={logo.url} className="flex items-center gap-2">
-                        <img
-                          src={logo.src}
-                          className="max-h-8 dark:invert"
-                          alt={logo.alt}
-                        />
-                      </Link>
-                    </SheetTitle>
-                  </SheetHeader>
-                  <div className="flex flex-col gap-6 p-4">
-                    <Accordion className="flex w-full flex-col gap-4">
-                      {menu.map((item) => renderMobileMenuItem(item))}
-                    </Accordion>
-                    {!isPending && user ? (
-                      <div className="flex flex-col gap-3 border-t pt-4">
-                        <p className="text-sm font-medium">
-                          Signed in as {user.name}
-                        </p>
-                        <Button
-                          variant="outline"
-                          render={<Link href="/dashboard" />}
-                        >
-                          <LayoutDashboard />
-                          Dashboard
-                        </Button>
-                        <Button
-                          variant="outline"
-                          disabled={isSigningOut}
-                          onClick={handleSignOut}
-                        >
-                          <LogOut />
-                          {isSigningOut ? "Signing out..." : "Sign out"}
-                        </Button>
-                      </div>
-                    ) : !isPending ? (
-                      <div className="flex flex-col gap-3 border-t pt-4">
-                        <Button variant="outline">
-                          <Link href={loginURL}>{auth.login.title}</Link>
-                        </Button>
-                        <Button>
-                          <Link href={registrationURL}>
-                            {auth.signup.title}
-                          </Link>
-                        </Button>
-                      </div>
-                    ) : null}
-                  </div>
-                </SheetContent>
-              </Sheet>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const renderMenuItem = (item: MenuItem) => {
-  return (
-    <NavigationMenuItem key={item.title}>
-      <NavigationMenuLink
-        render={
-          <Link
-            href={item.url}
-            className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
-          >
-            {item.title}
-          </Link>
-        }
-      />
-    </NavigationMenuItem>
-  );
-};
-
-const renderMobileMenuItem = (item: MenuItem) => {
-  return (
-    <Link key={item.title} href={item.url} className="text-md font-semibold">
-      {item.title}
-    </Link>
-  );
-};
-
-export { Navbar };
+  return <header className="sticky top-0 z-30 border-b border-teal-950/8 bg-[#fdfcf8]/88 backdrop-blur-xl">
+    <div className="mx-auto flex h-18 max-w-7xl items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
+      <Link href="/" className="group flex min-w-0 items-center gap-2.5" aria-label="CyberSafeBD home"><span className="grid size-9 shrink-0 place-items-center rounded-xl bg-[#092d2a] text-teal-100 shadow-md shadow-teal-950/15 transition-transform duration-200 group-hover:-rotate-6"><ShieldCheck className="size-5" /></span><span className="leading-none"><span className="block text-[0.95rem] font-black tracking-tight text-[#092d2a]">CyberSafeBD</span><span className="mt-1 block text-[0.58rem] font-bold tracking-[0.16em] text-teal-700 uppercase">Know your next step</span></span></Link>
+      <nav className="hidden items-center gap-0.5 lg:flex" aria-label="Primary navigation">{links.map(([label, href]) => <Link key={href} href={href} className={cn("rounded-lg px-2.5 py-2 text-[0.8rem] font-bold transition-colors", pathname === href ? "bg-teal-100 text-teal-950" : "text-slate-600 hover:bg-teal-50 hover:text-teal-950")}>{label}</Link>)}</nav>
+      <div className="hidden items-center gap-2 lg:flex">{authActions}</div>
+      <Button size="icon" variant="outline" className="lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu"><Menu /></Button>
+    </div>
+    {open ? <div className="fixed inset-0 z-50 bg-slate-950/25 backdrop-blur-sm lg:hidden" onClick={() => setOpen(false)}><div className="ml-auto flex h-full w-[min(22rem,90vw)] flex-col bg-[#fdfcf8] p-5 shadow-2xl" onClick={(event) => event.stopPropagation()}><div className="flex items-center justify-between"><p className="font-black text-[#092d2a]">Explore CyberSafeBD</p><Button variant="ghost" size="icon" onClick={() => setOpen(false)} aria-label="Close menu"><X /></Button></div><nav className="mt-8 grid gap-1">{links.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)} className={cn("rounded-xl px-4 py-3 text-sm font-bold", pathname === href ? "bg-teal-100 text-teal-950" : "text-slate-700 hover:bg-teal-50")}>{label}</Link>)}</nav><div className="mt-auto grid gap-2 border-t border-teal-950/10 pt-5">{authActions}</div></div></div> : null}
+  </header>;
+}

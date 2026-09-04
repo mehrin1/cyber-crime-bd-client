@@ -49,28 +49,28 @@
 }
 
 :root {
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --card: oklch(0.995 0.004 90);
+  --card-foreground: oklch(0.22 0.025 185);
+  --popover: oklch(0.995 0.004 90);
+  --popover-foreground: oklch(0.22 0.025 185);
+  --primary: oklch(0.31 0.065 184);
+  --primary-foreground: oklch(0.985 0.01 95);
+  --secondary: oklch(0.92 0.035 168);
+  --secondary-foreground: oklch(0.25 0.055 184);
+  --muted: oklch(0.955 0.014 95);
+  --muted-foreground: oklch(0.47 0.03 184);
+  --accent: oklch(0.91 0.05 84);
+  --accent-foreground: oklch(0.27 0.04 68);
+  --destructive: oklch(0.53 0.18 28);
+  --border: oklch(0.87 0.018 170);
+  --input: oklch(0.82 0.025 175);
+  --ring: oklch(0.54 0.1 180);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --radius: 0.85rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -79,8 +79,8 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.975 0.012 90);
+  --foreground: oklch(0.22 0.025 185);
 }
 
 .dark {
@@ -123,8 +123,21 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: radial-gradient(circle at 10% -10%, oklch(0.9 0.06 172 / 0.35), transparent 28rem), radial-gradient(circle at 95% 15%, oklch(0.92 0.06 85 / 0.32), transparent 24rem);
+    font-family: "Aptos", "Segoe UI Variable", "Trebuchet MS", sans-serif;
   }
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
   }
+  h1, h2, h3, h4 { font-family: "Aptos Display", "Trebuchet MS", sans-serif; letter-spacing: -0.025em; }
+  ::selection { background: oklch(0.78 0.09 170); color: oklch(0.2 0.03 185); }
+}
+
+@keyframes soft-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+main > section:first-child { animation: soft-rise 420ms ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
